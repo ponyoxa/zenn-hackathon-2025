@@ -29,7 +29,7 @@ bin/internal/engine.version
 .classpath
 .project
 .settings/
-.vscode/*
+# .vscode/*
 .ccls-cache
 
 # Flutter repo-specific
