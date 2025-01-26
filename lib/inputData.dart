@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'result.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
+import 'services/gemini_service.dart';
 
 class InputData extends StatefulWidget {
   const InputData({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -20,17 +13,34 @@ class InputData extends StatefulWidget {
 }
 
 class _InputDataState extends State<InputData> {
-  int _counter = 0;
+  final TextEditingController _imageController = TextEditingController();
+  final TextEditingController _zennController = TextEditingController();
+  final _geminiService = GeminiService();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future<void> _generateResult() async {
+    try {
+      final result = await _geminiService.generateContent(
+        imageText: _imageController.text,
+        zennAccount: _zennController.text,
+      );
+
+      if (!mounted) return;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Result(
+            title: '結果',
+            resultText: result,
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('エラーが発生しました: $e')),
+      );
+    }
   }
 
   @override
@@ -74,26 +84,30 @@ class _InputDataState extends State<InputData> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text('なりたいイメージ'),
-              const Card(
+              Card(
                 color: Color.fromARGB(255, 223, 223, 223),
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
-                    maxLines: 5, //or null
+                    controller: _imageController,
+                    maxLines: 5,
                     decoration: InputDecoration.collapsed(
-                        hintText: "Enter your text here"),
+                      hintText: "なりたいイメージを入力してください",
+                    ),
                   ),
                 ),
               ),
               Text('zenn アカウント'),
-              const Card(
+              Card(
                 color: Color.fromARGB(255, 223, 223, 223),
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
-                    maxLines: 1, //or null
+                    controller: _zennController,
+                    maxLines: 1,
                     decoration: InputDecoration.collapsed(
-                        hintText: "Enter your text here"),
+                      hintText: "Zennのアカウント名を入力してください",
+                    ),
                   ),
                 ),
               ),
@@ -102,17 +116,17 @@ class _InputDataState extends State<InputData> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Result(title: '結果'),
-            ),
-          );
-        },
-        tooltip: '次へ',
+        onPressed: _generateResult,
+        tooltip: '生成',
         child: const Icon(Icons.arrow_forward),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  void dispose() {
+    _imageController.dispose();
+    _zennController.dispose();
+    super.dispose();
   }
 }
