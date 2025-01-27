@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'result.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'services/gemini_service.dart';
 
 class InputData extends StatefulWidget {
