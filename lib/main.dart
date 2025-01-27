@@ -12,7 +12,7 @@ class IndividualityAiAgentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Individuality AI Agent',
+      title: 'Individuality AI Agent 😊',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -37,4 +37,3 @@ class IndividualityAiAgentApp extends StatelessWidget {
     );
   }
 }
-
