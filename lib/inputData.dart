@@ -16,6 +16,17 @@ class _InputDataState extends State<InputData> {
   final TextEditingController _zennController = TextEditingController();
   final _geminiService = GeminiService();
   bool _isAgreed = false; // 同意状態を管理する変数
+  int _selectedLevel = 1; // 初期選択レベルを1に設定
+
+  final List<Map<String, dynamic>> _levels = [
+    {'value': 1, 'label': 'レベル1: 指導下で作業ができる'},
+    {'value': 2, 'label': 'レベル2: 指導下で一部独力でできる'},
+    {'value': 3, 'label': 'レベル3: 要求の作業を独力でできる'},
+    {'value': 4, 'label': 'レベル4: 専門スキルがある'},
+    {'value': 5, 'label': 'レベル5: 社内でリードできる'},
+    {'value': 6, 'label': 'レベル6: 国内のハイエンドプレーヤ'},
+    {'value': 7, 'label': 'レベル7: 世界で通用するプレーヤ'},
+  ];
 
   Future<void> _generateResult() async {
     try {
@@ -94,6 +105,32 @@ class _InputDataState extends State<InputData> {
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // 目指すレベルのセレクトボックス
+                        const Text(
+                          '目指すレベル',
+                        ),
+
+                        Card(
+                          color: Color.fromARGB(255, 223, 223, 223),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: DropdownButton<int>(
+                              value: _selectedLevel,
+                              items: _levels.map((level) {
+                                return DropdownMenuItem<int>(
+                                  value: level['value'],
+                                  child: Text(level['label']),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedLevel = value!;
+                                });
+                              },
                             ),
                           ),
                         ),
