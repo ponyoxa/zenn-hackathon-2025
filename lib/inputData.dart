@@ -30,19 +30,20 @@ class _InputDataState extends State<InputData> {
 
   Future<void> _generateResult() async {
     try {
-      final result = await _geminiService.generateContent(
-        imageText: _imageController.text,
-        zennAccount: _zennController.text,
-      );
+      // final result = await _geminiService.generateContent(
+      //   imageText: _imageController.text,
+      //   zennAccount: _zennController.text,
+      // );
 
-      if (!mounted) return;
+      // if (!mounted) return;
 
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => Result(
             title: '結果',
-            resultText: result,
+            // resultText: result,
+            resultText: 'test',
           ),
         ),
       );
