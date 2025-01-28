@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'result.dart';
-import 'services/gemini_service.dart';
+import 'usecases/ai_analysis_usecase.dart';
 
 class InputData extends StatefulWidget {
   const InputData({super.key, required this.title});
@@ -12,15 +12,30 @@ class InputData extends StatefulWidget {
 }
 
 class _InputDataState extends State<InputData> {
-  final TextEditingController _imageController = TextEditingController();
-  final TextEditingController _zennController = TextEditingController();
-  final _geminiService = GeminiService();
+  final TextEditingController _futureImageController = TextEditingController();
+  final TextEditingController _zennAccountController = TextEditingController();
+  final String _desiredLevel = '1';
+  String _futureImage = '';
+  String _zennAccount = '';
+  final _aiAnalysis = AiAnalysisUseCase();
+
+  @override
+  void initState() {
+    super.initState();
+    _futureImageController.addListener(() {
+      setState(() => _futureImage = _futureImageController.text);
+    });
+    _zennAccountController.addListener(() {
+      setState(() => _zennAccount = _zennAccountController.text);
+    });
+  }
 
   Future<void> _generateResult() async {
     try {
-      final result = await _geminiService.generateContent(
-        imageText: _imageController.text,
-        zennAccount: _zennController.text,
+      final result = await _aiAnalysis.generateContent(
+        desiredLevel: _desiredLevel,
+        futureImage: _futureImage,
+        zennAccount: _zennAccount,
       );
 
       if (!mounted) return;
@@ -88,7 +103,7 @@ class _InputDataState extends State<InputData> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
-                    controller: _imageController,
+                    controller: _futureImageController,
                     maxLines: 5,
                     decoration: InputDecoration.collapsed(
                       hintText: "なりたいイメージを入力してください",
@@ -102,7 +117,7 @@ class _InputDataState extends State<InputData> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
-                    controller: _zennController,
+                    controller: _zennAccountController,
                     maxLines: 1,
                     decoration: InputDecoration.collapsed(
                       hintText: "Zennのアカウント名を入力してください",
@@ -124,8 +139,8 @@ class _InputDataState extends State<InputData> {
 
   @override
   void dispose() {
-    _imageController.dispose();
-    _zennController.dispose();
+    _futureImageController.dispose();
+    _zennAccountController.dispose();
     super.dispose();
   }
 }
