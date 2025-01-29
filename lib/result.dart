@@ -26,7 +26,7 @@ class Result extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/bg.jpeg'), // 背景画像のパス
+          image: AssetImage('assets/images/bg.jpeg'), // 背景画像のパス
           fit: BoxFit.cover, // 画面全体を覆う
         ),
       ),
