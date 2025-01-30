@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class Result extends StatelessWidget {
   const Result({
@@ -43,9 +44,11 @@ class Result extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  '※あくまでアウトプットからAIが分析した結果です',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                Center(
+                  child: Text(
+                    '※あくまでアウトプットからAIが分析した結果です',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
                 const SizedBox(height: 40),
                 Center(
@@ -87,16 +90,22 @@ class Result extends StatelessWidget {
                 Center(
                   child: Card(
                     color: Colors.white,
-                    child: InkWell(
-                      child: SizedBox(
-                        width: 400,
-                        height: 400,
-                        child: Column(
-                          children: const [
-                            // TODO 分析結果のテキストが得られるようになったら差し替える
-                            Text(
-                                '分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果 分析結果'),
-                          ],
+                    child: SizedBox(
+                      width: 400,
+                      height: 400,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          child: Markdown(
+                            data: resultText,
+                            shrinkWrap: true,
+                            styleSheet: MarkdownStyleSheet(
+                              p: const TextStyle(
+                                fontSize: 16.0,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

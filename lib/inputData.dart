@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'result.dart';
-import 'services/gemini_service.dart';
+import 'usecases/ai_analysis_usecase.dart';
 
 class InputData extends StatefulWidget {
   const InputData({super.key, required this.title});
@@ -12,9 +12,9 @@ class InputData extends StatefulWidget {
 }
 
 class _InputDataState extends State<InputData> {
-  final TextEditingController _imageController = TextEditingController();
-  final TextEditingController _zennController = TextEditingController();
-  final _geminiService = GeminiService();
+  final TextEditingController _futureImageController = TextEditingController();
+  final TextEditingController _zennAccountController = TextEditingController();
+  final _aiAnalysis = AiAnalysisUseCase();
   bool _isAgreed = false; // 同意状態を管理する変数
   int _selectedLevel = 1; // 初期選択レベルを1に設定
 
@@ -28,11 +28,23 @@ class _InputDataState extends State<InputData> {
     {'value': 7, 'label': 'レベル7: 世界で通用するプレーヤ'},
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _futureImageController.addListener(() {
+      setState(() {});
+    });
+    _zennAccountController.addListener(() {
+      setState(() {});
+    });
+  }
+
   Future<void> _generateResult() async {
     try {
-      final result = await _geminiService.generateContent(
-        imageText: _imageController.text,
-        zennAccount: _zennController.text,
+      final result = await _aiAnalysis.generateContent(
+        desiredLevel: _selectedLevel.toString(),
+        futureImage: _futureImageController.text,
+        zennAccount: _zennAccountController.text,
       );
 
       if (!mounted) return;
@@ -56,6 +68,13 @@ class _InputDataState extends State<InputData> {
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -141,7 +160,7 @@ class _InputDataState extends State<InputData> {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: TextField(
-                              controller: _imageController,
+                              controller: _futureImageController,
                               maxLines: 5,
                               decoration: InputDecoration.collapsed(
                                 hintText: "なりたいイメージを入力してください",
@@ -156,7 +175,7 @@ class _InputDataState extends State<InputData> {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: TextField(
-                              controller: _zennController,
+                              controller: _zennAccountController,
                               maxLines: 1,
                               decoration: InputDecoration.collapsed(
                                 hintText: "@の後ろのユーザ名を入力してください",
@@ -219,8 +238,8 @@ class _InputDataState extends State<InputData> {
 
   @override
   void dispose() {
-    _imageController.dispose();
-    _zennController.dispose();
+    _futureImageController.dispose();
+    _zennAccountController.dispose();
     super.dispose();
   }
 }

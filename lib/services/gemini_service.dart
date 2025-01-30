@@ -15,18 +15,8 @@ class GeminiService {
   );
 
   Future<String> generateContent({
-    required String imageText,
-    required String zennAccount,
+    required String prompt,
   }) async {
-//     final prompt = '''
-// なりたいイメージ：$imageText
-// Zennアカウント：$zennAccount
-// 上記の情報から、この人の特徴と、おすすめの記事のテーマを3つ提案してください。
-// ''';
-    final prompt = '''
-日本語で応答してください。
-こんにちは！
-''';
 
     final response = await model.generateContent([Content.text(prompt)]);
     return response.text ?? '結果を生成できませんでした。';
