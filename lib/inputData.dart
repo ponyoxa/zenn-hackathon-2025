@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'result.dart';
 import 'usecases/ai_analysis_usecase.dart';
+import 'main.dart'; // loadingNotifierのためのインポートを追加
 
 class InputData extends StatefulWidget {
   const InputData({super.key, required this.title});
@@ -40,6 +41,8 @@ class _InputDataState extends State<InputData> {
   }
 
   Future<void> _generateResult() async {
+    loadingNotifier.value = true; // ローディング開始
+
     try {
       final result = await _aiAnalysis.generateContent(
         desiredLevel: _selectedLevel.toString(),
@@ -48,6 +51,8 @@ class _InputDataState extends State<InputData> {
       );
 
       if (!mounted) return;
+
+      loadingNotifier.value = false; // ローディング終了
 
       Navigator.push(
         context,
@@ -60,6 +65,7 @@ class _InputDataState extends State<InputData> {
       );
     } catch (e) {
       if (!mounted) return;
+      loadingNotifier.value = false; // エラー時もローディング終了
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('エラーが発生しました: $e')),
       );
