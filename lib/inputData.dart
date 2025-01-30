@@ -16,7 +16,7 @@ class _InputDataState extends State<InputData> {
   final TextEditingController _zennAccountController = TextEditingController();
   final _aiAnalysis = AiAnalysisUseCase();
   bool _isAgreed = false; // 同意状態を管理する変数
-  final int _selectedLevel = 1; // 初期選択レベルを1に設定
+  int _selectedLevel = 1; // 初期選択レベルを1に設定
 
   final List<Map<String, dynamic>> _levels = [
     {'value': 1, 'label': 'レベル1: 指導下で作業ができる'},
@@ -147,7 +147,7 @@ class _InputDataState extends State<InputData> {
                               }).toList(),
                               onChanged: (value) {
                                 setState(() {
-                                  // _selectedLevel = value!;
+                                  _selectedLevel = value!;
                                 });
                               },
                             ),
