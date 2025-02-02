@@ -43,10 +43,26 @@ class ZennService {
   }) async {
     final apiArticleUrl = 'https://zenn.dev/api/articles/$articleId';
     final response = await http.get(Uri.parse(apiArticleUrl));
+
+    if (response.statusCode != 200) {
+      //throw Exception('記事の読み込みに失敗しました');
+      return '';
+    }
+
     final responseBody = jsonDecode(response.body);
     final article = responseBody['article'] as Map<String, dynamic>;
 
-    // 必要な記事情報を文字列として結合
-    return '${article['title']}\n${article['published_at']}\n${article['body']}';
+    // body_htmlを取得
+    final String bodyHtml = article['body_html'] ?? '';
+    // HTML部分を除去
+    final String plainText = removeHtmlTags(bodyHtml);
+
+    return plainText;
+  }
+
+  String removeHtmlTags(String html) {
+    final RegExp exp =
+        RegExp(r'<[^>]*>', multiLine: true, caseSensitive: false);
+    return html.replaceAll(exp, '');
   }
 }
