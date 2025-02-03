@@ -199,23 +199,20 @@ class _InputDataState extends State<InputData> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: _isAgreed,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _isAgreed = value ?? false;
-                                });
-                              },
-                            ),
-                            const Text(
-                              'アウトプットをAIが読み込むことに同意する',
-                              style: TextStyle(
-                                  fontSize: 14.0, color: Colors.black),
-                            ),
-                          ],
+                        // 同意チェックボックス
+                        CheckboxListTile(
+                          title: const Text(
+                            'アウトプットをAIが読み込むことに同意する',
+                            style:
+                                TextStyle(fontSize: 14.0, color: Colors.black),
+                          ),
+                          value: _isAgreed,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isAgreed = value ?? false;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
