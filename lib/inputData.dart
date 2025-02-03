@@ -198,21 +198,25 @@ class _InputDataState extends State<InputData> {
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // 同意チェックボックス
-                        CheckboxListTile(
-                          title: const Text(
-                            'アウトプットをAIが読み込むことに同意する',
-                            style:
-                                TextStyle(fontSize: 14.0, color: Colors.black),
+                        Container(
+                          width: 400,
+                          child: // 同意チェックボックス
+                              CheckboxListTile(
+                            title: const Text(
+                              'アウトプットをAIが読み込むことに同意する',
+                              style: TextStyle(
+                                  fontSize: 14.0, color: Colors.black),
+                            ),
+                            value: _isAgreed,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _isAgreed = value ?? false;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,
                           ),
-                          value: _isAgreed,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isAgreed = value ?? false;
-                            });
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
