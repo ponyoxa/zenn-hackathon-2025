@@ -31,7 +31,10 @@ class ZennService {
   }) async {
     final apiArticlesUrl =
         'https://zenn.dev/api/articles?page=1&username=$zennAccount&count=96&order=latest';
-    final response = await http.get(Uri.parse(apiArticlesUrl));
+    final response = await http.post(
+        Uri.parse('https://api-ej5rtjryya-uc.a.run.app/proxy'),
+        body: {'url': apiArticlesUrl});
+    // final response = await http.get(Uri.parse(apiArticlesUrl));
     final responseBody = jsonDecode(response.body);
     final List<dynamic> articleList = responseBody['articles'] as List<dynamic>;
 
@@ -42,8 +45,9 @@ class ZennService {
     required String articleId,
   }) async {
     final apiArticleUrl = 'https://zenn.dev/api/articles/$articleId';
-    final response = await http.get(Uri.parse(apiArticleUrl));
-
+    final response = await http.post(
+        Uri.parse('https://api-ej5rtjryya-uc.a.run.app/proxy'),
+        body: {'url': apiArticleUrl});
     if (response.statusCode != 200) {
       //throw Exception('記事の読み込みに失敗しました');
       return '';
