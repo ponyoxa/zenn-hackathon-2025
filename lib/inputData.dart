@@ -101,7 +101,7 @@ class _InputDataState extends State<InputData> {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('images/bg.jpeg'),
+                  image: AssetImage('assets/images/bg.jpeg'),
                   fit: BoxFit.cover,
                 ),
               ),
