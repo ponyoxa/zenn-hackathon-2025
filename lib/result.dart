@@ -70,8 +70,7 @@ class Result extends StatelessWidget {
                         ],
                         radarBackgroundColor: Colors.transparent,
                         borderData: FlBorderData(show: false),
-                        radarBorderData:
-                            const BorderSide(color: Colors.transparent),
+                        radarBorderData: const BorderSide(color: Colors.black),
                         titleTextStyle:
                             TextStyle(color: Colors.black, fontSize: 18.0),
                         titlePositionPercentageOffset: 0.2,
@@ -81,8 +80,9 @@ class Result extends StatelessWidget {
                         },
                         tickCount: 4,
                         ticksTextStyle:
-                            TextStyle(color: Colors.grey, fontSize: 12),
-                        gridBorderData: BorderSide(color: Colors.grey),
+                            const TextStyle(color: Colors.grey, fontSize: 12),
+                        gridBorderData: const BorderSide(color: Colors.grey),
+                        tickBorderData: const BorderSide(color: Colors.grey),
                       ),
                     ),
                   ),
