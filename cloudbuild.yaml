@@ -1,6 +1,6 @@
 steps:
   # Flutter Web アプリのビルドステップ
-  - name: 'cirrusci/flutter:latest'
+  - name: 'cirruslabs/flutter:3.27.3'
     id: 'Build Flutter Web'
     entrypoint: 'bash'
     args:
