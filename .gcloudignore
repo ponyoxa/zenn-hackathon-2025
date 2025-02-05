@@ -33,4 +33,3 @@ test/
 
 /build/flutter_assets
 *dill
-.env
