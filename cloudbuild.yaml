@@ -1,17 +1,38 @@
 steps:
-  # Flutter Web アプリのビルドステップ
-  - name: 'cirruslabs/flutter:3.27.3'
+  # Ubuntu コンテナ上で Flutter SDK をインストールし、Flutter Web をビルドするステップ
+  - name: 'ubuntu:22.04'
     id: 'Build Flutter Web'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
+        set -ex
+
+        echo "Updating apt-get and installing required packages..."
+        apt-get update && apt-get install -y git curl unzip xz-utils
+
+        echo "Downloading Flutter SDK (version 3.27.1)..."
+        curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.27.1-stable.tar.xz
+
+        echo "Extracting Flutter SDK..."
+        tar xf flutter_linux_3.27.1-stable.tar.xz
+
+        # Flutter コマンドを利用できるように PATH を追加
+        export PATH="$PATH:$(pwd)/flutter/bin"
+
+        echo "Disabling Flutter analytics..."
+        flutter config --no-analytics
+
+        echo "Running flutter doctor..."
+        flutter doctor
+
         echo "Installing dependencies..."
         flutter pub get
-        echo "Building Flutter web..."
+
+        echo "Building Flutter Web app..."
         flutter build web
 
-  # App Engine へのデプロイステップ
+  # ビルド済みの成果物を元に App Engine へデプロイするステップ
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'Deploy to App Engine'
     entrypoint: 'bash'
@@ -21,6 +42,6 @@ steps:
         echo "Deploying to App Engine..."
         gcloud app deploy app.yaml --quiet
 
-timeout: '900s'
+timeout: '1600s'
 options:
   logging: CLOUD_LOGGING_ONLY
