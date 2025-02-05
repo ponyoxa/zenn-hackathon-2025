@@ -21,7 +21,6 @@ steps:
         echo "Deploying to App Engine..."
         gcloud app deploy app.yaml --quiet
 
-# タイムアウト（秒） ※必要に応じて調整してください
 timeout: '900s'
 options:
   logging: CLOUD_LOGGING_ONLY
