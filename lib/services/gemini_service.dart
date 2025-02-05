@@ -1,4 +1,4 @@
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:http/http.dart' as http;
 
 class GeminiService {
   static final GeminiService _instance = GeminiService._internal();
@@ -9,16 +9,18 @@ class GeminiService {
 
   GeminiService._internal();
 
-  final model = GenerativeModel(
-    model: 'gemini-1.5-flash',
-    apiKey: const String.fromEnvironment('GEMINI_API_KEY'),
-  );
+  final fetchUrl = '${const String.fromEnvironment('BASE_URL')}/ask-gemini';
 
   Future<String> generateContent({
     required String prompt,
   }) async {
-
-    final response = await model.generateContent([Content.text(prompt)]);
-    return response.text ?? '結果を生成できませんでした。';
+    final response = await http.post(
+      Uri.parse(fetchUrl),
+      body: {'prompt': prompt},
+    );
+    final responseBody = response.body;
+    // レスポンスから引用符を削除
+    final content = responseBody.replaceAll('"', '').replaceAll(r'\n', '\n');
+    return content;
   }
 }

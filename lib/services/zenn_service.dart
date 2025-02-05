@@ -32,7 +32,7 @@ class ZennService {
     final apiArticlesUrl =
         'https://zenn.dev/api/articles?page=1&username=$zennAccount&count=96&order=latest';
     final response = await http.post(
-        Uri.parse('https://api-ej5rtjryya-uc.a.run.app/proxy'),
+        Uri.parse('${const String.fromEnvironment('BASE_URL')}/proxy'),
         body: {'url': apiArticlesUrl});
     // final response = await http.get(Uri.parse(apiArticlesUrl));
     final responseBody = jsonDecode(response.body);
