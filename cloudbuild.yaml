@@ -1,0 +1,25 @@
+steps:
+  # Flutter Web アプリのビルドステップ
+  - name: 'cirrusci/flutter:latest'
+    id: 'Build Flutter Web'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Installing dependencies..."
+        flutter pub get
+        echo "Building Flutter web..."
+        flutter build web
+
+  # App Engine へのデプロイステップ
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Deploy to App Engine'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Deploying to App Engine..."
+        gcloud app deploy app.yaml --quiet
+
+# タイムアウト（秒） ※必要に応じて調整してください
+timeout: '900s'
