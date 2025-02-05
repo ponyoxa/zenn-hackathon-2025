@@ -30,3 +30,7 @@ __pycache__/
 lib/
 test/
 /web/
+
+/build/flutter_assets
+*dill
+.env

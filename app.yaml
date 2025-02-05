@@ -1,6 +1,4 @@
-runtime: python27
-api_version: 1
-threadsafe: true
+runtime: nodejs22
 handlers:
   - url: /
     static_files: build/web/index.html
