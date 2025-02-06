@@ -1,6 +1,4 @@
-import '../services/zenn_service.dart';
-import '../services/prompt_service.dart';
-import '../services/gemini_service.dart';
+import 'package:http/http.dart' as http;
 
 class AiAnalysisUseCase {
   static final AiAnalysisUseCase _instance = AiAnalysisUseCase._internal();
@@ -11,29 +9,32 @@ class AiAnalysisUseCase {
 
   AiAnalysisUseCase._internal();
 
-  final zennService = ZennService();
-  final promptService = PromptService();
-  final geminiService = GeminiService();
+  final fetchUrl = '${const String.fromEnvironment('BASE_URL')}/ask-gemini';
 
   Future<String> generateContent({
     required String desiredLevel,
     required String futureImage,
     required String zennAccount,
   }) async {
-    // Zennの投稿を取得
-    final zennArticles =
-        await zennService.fetchArticles(zennAccount: zennAccount);
-
-    // プロンプトを生成
-    final prompt = promptService.generatePrompt(
-      desiredLevel: desiredLevel,
-      futureImage: futureImage,
-      zennArticles: zennArticles,
+    final response = await http.post(
+      Uri.parse(fetchUrl),
+      body: {
+        'desiredLevel': desiredLevel,
+        'futureImage': futureImage,
+        'zennAccount': zennAccount,
+      },
     );
+    if (response.statusCode != 200) {
+      throw Exception('AIからの応答に失敗しました。ステータスコード: ${response.statusCode}');
+    }
 
-    // プロンプトをGeminiに送信
-    final response = await geminiService.generateContent(prompt: prompt);
-
-    return response;
+    try {
+      final responseBody = response.body;
+      // レスポンスから引用符を削除
+      final content = responseBody.replaceAll('"', '').replaceAll(r'\n', '\n');
+      return content;
+    } catch (e) {
+      throw Exception('AIからのレスポンスの解析に失敗しました: $e');
+    }
   }
 }

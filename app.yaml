@@ -6,3 +6,5 @@ handlers:
   - url: /(.*)
     static_files: build/web/\1
     upload: build/web/(.*)
+env_variables:
+  BASE_URL: https://api-ej5rtjryya-uc.a.run.app
