@@ -1,4 +1,6 @@
 runtime: nodejs22
+env_variables:
+  BASE_URL: "https://zenn-hackathon-2025-backend-221542401571.asia-east1.run.app"
 handlers:
   - url: /
     static_files: build/web/index.html
