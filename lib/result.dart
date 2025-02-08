@@ -6,23 +6,83 @@ class Result extends StatelessWidget {
   const Result({
     super.key,
     required this.title,
-    required this.resultText,
+    required this.resultJson,
   });
 
   final String title;
-  final String resultText;
+  final Map<String, dynamic> resultJson;
 
   @override
   Widget build(BuildContext context) {
-    // TODO AIからの出力結果が得られたら差し替える
     // レーダーチャートのモックデータ
     final radarData = {
-      "テックスキル": 80,
-      "継続性": 70,
-      "課題解決": 75,
-      "コミュニケーション": 90,
-      "独自性": 60,
+      "テックスキル": resultJson['scores']['tech_skill']['score'],
+      "継続性": resultJson['scores']['continuation']['score'],
+      "課題解決": resultJson['scores']['problem_solving']['score'],
+      "コミュニケーション": resultJson['scores']['communication']['score'],
+      "独自性": resultJson['scores']['individuality']['score'],
     };
+
+    String markdownText = '''
+# 技術レベル
+${resultJson['level']}
+
+${resultJson['level_description']}
+
+## レベルの根拠
+${resultJson['level_reason']}
+
+
+# スコアの根拠
+
+## テックスキル
+${resultJson['scores']['tech_skill']['reason']}
+
+## 継続性
+${resultJson['scores']['continuation']['reason']}
+
+## 課題解決
+${resultJson['scores']['problem_solving']['reason']}
+
+## コミュニケーション
+${resultJson['scores']['communication']['reason']}
+
+## 独自性
+${resultJson['scores']['individuality']['reason']}
+
+## その他のスキル
+''';
+
+    for (var metric in resultJson['level_metrics']) {
+      markdownText += '''
+- ${metric['label']}: ${metric['level']}  
+根拠:${metric['reason']}
+''';
+    }
+
+    markdownText += '''
+# 長所・強みなどに基づいたアドバイス
+${resultJson['advice']}
+
+# コメント
+## [AI] 両親からのコメント
+${resultJson['comments']['author_parent']}
+
+## [AI] 親友からのコメント
+${resultJson['comments']['author_friend']}
+
+## [AI] 指導の専門家からのコメント
+${resultJson['comments']['author_mentor']}
+
+## [AI] ITのエキスパートからのコメント
+${resultJson['comments']['professional_expert']}
+
+## [AI] 1レベル上の先輩からのコメント
+${resultJson['comments']['senior_engineer']}
+
+# 次のステップへのアドバイス
+${resultJson['next_step']}
+''';
 
     return Container(
       decoration: BoxDecoration(
@@ -97,7 +157,7 @@ class Result extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: SingleChildScrollView(
                           child: Markdown(
-                            data: resultText,
+                            data: markdownText,
                             shrinkWrap: true,
                             styleSheet: MarkdownStyleSheet(
                               p: const TextStyle(
