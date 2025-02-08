@@ -59,7 +59,7 @@ class _InputDataState extends State<InputData> {
         MaterialPageRoute(
           builder: (context) => Result(
             title: '結果',
-            resultText: result,
+            resultJson: result,
           ),
         ),
       );

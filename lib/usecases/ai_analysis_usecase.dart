@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AiAnalysisUseCase {
   static final AiAnalysisUseCase _instance = AiAnalysisUseCase._internal();
@@ -11,7 +12,7 @@ class AiAnalysisUseCase {
 
   final fetchUrl = '${const String.fromEnvironment('BASE_URL')}/ask-gemini';
 
-  Future<String> generateContent({
+  Future<Map<String, dynamic>> generateContent({
     required String desiredLevel,
     required String futureImage,
     required String zennAccount,
@@ -31,7 +32,7 @@ class AiAnalysisUseCase {
     try {
       final responseBody = response.body;
       // レスポンスから引用符を削除
-      final content = responseBody.replaceAll('"', '').replaceAll(r'\n', '\n');
+      final content = json.decode(responseBody);
       return content;
     } catch (e) {
       throw Exception('AIからのレスポンスの解析に失敗しました: $e');
