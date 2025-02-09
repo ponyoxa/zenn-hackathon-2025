@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:zenn_hackthon_2025/classes/FixedTicksRadarChartData.dart';
 
 class Result extends StatelessWidget {
   const Result({
@@ -115,8 +116,7 @@ ${resultJson['next_step']}
                   child: SizedBox(
                     height: 300,
                     child: RadarChart(
-                      RadarChartData(
-                        radarShape: RadarShape.circle,
+                      FixedTicksRadarChartData(
                         dataSets: [
                           RadarDataSet(
                             dataEntries: radarData.values
@@ -128,21 +128,7 @@ ${resultJson['next_step']}
                             borderWidth: 2,
                           ),
                         ],
-                        radarBackgroundColor: Colors.transparent,
-                        borderData: FlBorderData(show: false),
-                        radarBorderData: const BorderSide(color: Colors.black),
-                        titleTextStyle:
-                            TextStyle(color: Colors.black, fontSize: 18.0),
-                        titlePositionPercentageOffset: 0.2,
-                        getTitle: (index, angle) {
-                          final keys = radarData.keys.toList();
-                          return RadarChartTitle(text: keys[index]);
-                        },
-                        tickCount: 4,
-                        ticksTextStyle:
-                            const TextStyle(color: Colors.grey, fontSize: 12),
-                        gridBorderData: const BorderSide(color: Colors.grey),
-                        tickBorderData: const BorderSide(color: Colors.grey),
+                        titles: radarData.keys.toList(),
                       ),
                     ),
                   ),
