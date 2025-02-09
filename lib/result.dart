@@ -151,7 +151,7 @@ ${resultJson['next_step']}
                   child: Card(
                     color: Colors.white,
                     child: SizedBox(
-                      width: 400,
+                      width: 980,
                       height: 400,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

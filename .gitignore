@@ -156,3 +156,5 @@ app.*.symbols
 
 # Environment variables
 .env
+env
+secret/
