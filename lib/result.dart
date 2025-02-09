@@ -61,7 +61,7 @@ ${resultJson['scores']['individuality']['reason']}
 ''';
     }
 
-    markdownText += '''
+    String otherMarkdownText = '''
 # 長所・強みなどに基づいたアドバイス
 ${resultJson['advice']}
 
@@ -144,6 +144,30 @@ ${resultJson['next_step']}
                         child: SingleChildScrollView(
                           child: Markdown(
                             data: markdownText,
+                            shrinkWrap: true,
+                            styleSheet: MarkdownStyleSheet(
+                              p: const TextStyle(
+                                fontSize: 16.0,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Card(
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: 980,
+                      height: 400,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          child: Markdown(
+                            data: otherMarkdownText,
                             shrinkWrap: true,
                             styleSheet: MarkdownStyleSheet(
                               p: const TextStyle(
