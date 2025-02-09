@@ -139,6 +139,18 @@ ${resultJson['next_step']}
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    '分析結果',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Center(
                   child: Card(
                     color: Colors.white,
@@ -163,6 +175,18 @@ ${resultJson['next_step']}
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'アドバイス・次のステップに向けて',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Center(
                   child: Card(
                     color: Colors.white,
