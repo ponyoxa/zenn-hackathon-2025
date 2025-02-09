@@ -25,6 +25,17 @@ class Result extends StatelessWidget {
     };
 
     String markdownText = '''
+# 個性
+${resultJson['characteristics']}
+
+# 長所・強みなどに基づいたアドバイス
+${resultJson['advice']}
+
+
+# フォローアップ
+${resultJson['follow_up']}
+
+
 # 技術レベル
 ${resultJson['level']}
 
@@ -66,11 +77,6 @@ ${resultJson['scores']['individuality']['reason']}
 ${resultJson['advice']}
 
 # コメント
-## [AI] 両親からのコメント
-${resultJson['comments']['author_parent']}
-
-## [AI] 親友からのコメント
-${resultJson['comments']['author_friend']}
 
 ## [AI] 指導の専門家からのコメント
 ${resultJson['comments']['author_mentor']}
